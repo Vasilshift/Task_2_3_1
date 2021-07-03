@@ -3,18 +3,21 @@ package web.dao;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Repository;
 import web.model.User;
 
 import java.util.List;
 
-
+@Repository
 public class UserDaoImpl implements UserDao {
 
-    private final SessionFactory sessionFactory;
+    private SessionFactory sessionFactory;
 
-    public UserDaoImp(@Autowired SessionFactory sessionFactory) {
+    public UserDaoImpl(@Autowired SessionFactory sessionFactory) {
         this.sessionFactory = sessionFactory;
     }
+
+    public UserDaoImpl(){}
 
     @SuppressWarnings("Unchecked")
     @Override
@@ -32,12 +35,12 @@ public class UserDaoImpl implements UserDao {
 // .filter(user -> user.getId() == id)
 // .findAny()
 // .orElse(null);
-        User user = sessionFactory.getCurrentSession()
+
+
+        return sessionFactory.getCurrentSession()
                 .createQuery(HQL, User.class)
                 .setParameter("id", id)
                 .uniqueResult();
-
-        return user;
     }
 
     @Override

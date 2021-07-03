@@ -12,7 +12,7 @@ import web.service.UserServiceImpl;
 @RequestMapping("/users")
 public class UserController {
 
-    private UserService userService = new UserServiceImpl();
+    private final UserService userService = new UserServiceImpl();
 
     @GetMapping()
     public String allUsers(Model model) {

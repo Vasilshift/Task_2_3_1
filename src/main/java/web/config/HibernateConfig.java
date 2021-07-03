@@ -21,18 +21,10 @@ import java.util.Properties;
 @PropertySource(value = "classpath:db.properties")
 public class HibernateConfig {
 
-    private final Environment env;
+    private final Environment environment;
 
-    public AppConfig(@Autowired Environment environment) {
+    public HibernateConfig(@Autowired Environment environment) {
         this.environment = environment;
-    }
-
-    private Properties hibernateProperties() {
-        Properties properties = new Properties();
-        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
-        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
-        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
-        return properties;
     }
 
     @Bean
@@ -49,14 +41,20 @@ public class HibernateConfig {
     public LocalSessionFactoryBean getSessionFactory() {
         LocalSessionFactoryBean factoryBean = new LocalSessionFactoryBean();
         factoryBean.setDataSource(dataSource());
-        factoryBean.setPackagesToScan("web.model");
-        factoryBean.setHibernateProperties(hibernateProperties());
+      //  factoryBean.setPackagesToScan("web.model");
+
+        Properties properties = new Properties();
+        properties.put("hibernate.dialect", environment.getRequiredProperty("hibernate.dialect"));
+        properties.put("hibernate.show_sql", environment.getRequiredProperty("hibernate.show_sql"));
+        properties.put("hibernate.hbm2ddl.auto", environment.getRequiredProperty("hibernate.hbm2ddl.auto"));
+
+        factoryBean.setHibernateProperties(properties);
         factoryBean.setAnnotatedClasses(User.class);
 
         return factoryBean;
     }
 
-
+    @Bean
     public HibernateTransactionManager transactionManager() {
         HibernateTransactionManager transactionManager = new HibernateTransactionManager();
         transactionManager.setSessionFactory(getSessionFactory().getObject());
