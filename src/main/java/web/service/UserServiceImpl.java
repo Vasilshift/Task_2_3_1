@@ -15,7 +15,8 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
 
-    public UserServiceImpl() {}
+    public UserServiceImpl() {
+    }
 
     @Transactional
     @Override
@@ -43,8 +44,8 @@ public class UserServiceImpl implements UserService {
 
     @Transactional
     @Override
-    public void update(User user,int id) {
-        userDao.update(user,id);
+    public void update(User user, int id) {
+        userDao.update(user, id);
     }
 
 }

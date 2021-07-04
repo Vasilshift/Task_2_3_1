@@ -3,7 +3,6 @@ package web.config;
 import org.springframework.web.filter.CharacterEncodingFilter;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
-
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 
@@ -33,13 +32,11 @@ public class MyInit extends AbstractAnnotationConfigDispatcherServletInitializer
     }
 
     private void registerHiddenFieldFilter(ServletContext aContext) {
-
         CharacterEncodingFilter characterEncodingFilter = new CharacterEncodingFilter();
         characterEncodingFilter.setEncoding("UTF-8");
         characterEncodingFilter.setForceEncoding(true);
 
         aContext.addFilter("hiddenHttpMethodFilter",
                 new HiddenHttpMethodFilter()).addMappingForUrlPatterns(null ,false, "/*");
-        aContext.addFilter("characterEncodingFilter", characterEncodingFilter);
     }
 }

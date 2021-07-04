@@ -1,53 +1,51 @@
 package web.dao;
 
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.query.Query;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 import web.model.User;
-
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
+import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
+@Transactional
 public class UserDaoImpl implements UserDao {
 
-    @Autowired
-    private SessionFactory sessionFactory;
+    @PersistenceContext
+    private EntityManager entityManager;
 
-    public UserDaoImpl(){}
+    public UserDaoImpl() {
+    }
 
     @SuppressWarnings("Unchecked")
     @Override
     public List<User> allUsers() {
-
-        Session session = sessionFactory.getCurrentSession();
-        return session.createQuery("From User",User.class).list();
+        return entityManager.createQuery("From User", User.class).getResultList();
     }
 
     @Override
     public User show(int id) {
-        return sessionFactory.getCurrentSession()
-                .get(User.class, id);
+        TypedQuery<User> query = entityManager.createQuery("From User where id=:id", User.class);
+        query.setParameter("id", id);
+        return query.getResultList().stream().findAny().orElse(null);
     }
 
     @Override
     public void add(User user) {
-        sessionFactory.getCurrentSession().save(user);
+        entityManager.persist(user);
     }
 
     @Override
     public void delete(int id) {
-        Session session = sessionFactory.getCurrentSession();
-        Query<User> query = session.createQuery("delete from User where id =:id");
-        query.setParameter("id", id);
-        query.executeUpdate();
+        User userToRemove = show(id);
+        entityManager.remove(userToRemove);
+
     }
 
     @Override
     public void update(User user, int id) {
         User userToUpdate = show(id);
-
         userToUpdate.setName(user.getName());
         userToUpdate.setLastname(user.getLastname());
         userToUpdate.setAge(user.getAge());
