@@ -15,6 +15,7 @@ public class UserController {
     private UserService userService;
 
     @GetMapping()
+
     public String allUsers(Model model) {
         model.addAttribute("userList", userService.allUsers());
         return "users/allUsers";
@@ -44,8 +45,8 @@ public class UserController {
     }
 
     @PatchMapping("/{id}")
-    public String update(@ModelAttribute("user") User user, @PathVariable("id") int id) {
-        userService.update(user, id);
+    public String update(@ModelAttribute("user") User user) {
+        userService.update(user);
         return "redirect:/users";
     }
 

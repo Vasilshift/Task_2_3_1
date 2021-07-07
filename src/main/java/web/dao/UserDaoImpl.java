@@ -38,18 +38,11 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public void delete(int id) {
-        User userToRemove = show(id);
-        entityManager.remove(userToRemove);
-
+        entityManager.remove(show(id));
     }
 
     @Override
-    public void update(User user, int id) {
-        User userToUpdate = show(id);
-        userToUpdate.setName(user.getName());
-        userToUpdate.setLastname(user.getLastname());
-        userToUpdate.setAge(user.getAge());
-        userToUpdate.setWork(user.getWork());
-        userToUpdate.setMarried(user.isMarried());
+    public void update(User user) {
+        entityManager.merge(user);
     }
 }
