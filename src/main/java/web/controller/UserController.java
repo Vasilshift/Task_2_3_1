@@ -23,7 +23,7 @@ public class UserController {
 
     @GetMapping("/{id}")
     public String showUser(@PathVariable("id") int id, Model model) {
-        model.addAttribute(userService.show(id));
+        model.addAttribute(userService.get(id));
         return "users/show";
     }
 
@@ -40,7 +40,7 @@ public class UserController {
 
     @GetMapping("/{id}/edit")
     public String edit(@PathVariable("id") int id, Model model) {
-        model.addAttribute("user", userService.show(id));
+        model.addAttribute("user", userService.get(id));
         return "users/edit";
     }
 

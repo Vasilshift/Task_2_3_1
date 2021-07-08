@@ -7,7 +7,7 @@ public interface UserService {
 
     List<User> allUsers();
 
-    User show(int id);
+    User get(int id);
 
     void add(User user);
 
