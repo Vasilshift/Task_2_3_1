@@ -15,6 +15,9 @@
     <th>Age</th>
     <th>Work</th>
     <th>Married</th>
+    <th>Username</th>
+    <th>Password</th>
+    <th>Roles</th>
     <th>Actions</th>
   </tr>
   <th:block th:each="user : ${userList}">
@@ -27,6 +30,9 @@
       <td th:text="${user.getAge()}">Age</td>
       <td th:text="${user.getWork()}">Work</td>
       <td th:text="${user.isMarried()}">Married?</td>
+      <td th:text="${user.getUsername()}">Username</td>
+      <td th:text="${user.getPassword()}">Password</td>
+      <td th:text="${user.getAuthorities()}">Roles</td>
       <td>
         <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Update</a>
         <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">

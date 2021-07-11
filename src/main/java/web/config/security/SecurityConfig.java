@@ -28,13 +28,14 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 //      .antMatchers("/").permitAll()
                 //      .antMatchers("/login").anonymous()
-                .antMatchers("/users/**").hasRole("USER")
-                .antMatchers("/admin/**").authenticated()
+                .antMatchers("/user").hasAnyRole("USER,ADMIN")
+                .antMatchers("/admin/**").hasRole("ADMIN")
                 .anyRequest().authenticated()
                 .and().formLogin()
-                //.and().logout().logoutSuccessUrl("/")
+                .and().logout().logoutSuccessUrl("/")
         ;
     }
+
 
 //    @Bean
 //    public JdbcUserDetailsManager users (DataSource dataSource){
@@ -47,7 +48,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 //        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
 //        jdbcUserDetailsManager.createUser(user);
 //        return jdbcUserDetailsManager;
-//    }
+////    }
 //    @Override
 //    public void configure(AuthenticationManagerBuilder auth) throws Exception {
 //        auth.inMemoryAuthentication().withUser("ADMIN").password("1").roles("ADMIN");

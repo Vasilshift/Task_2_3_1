@@ -25,7 +25,21 @@
     <input type = "text" th:field="*{username}" id="username"/>
     <br/>
     <label for="name">Password: </label>
-    <input type = "text" th:field="*{password}" id="password"/>
+    <input type = "text" th:field="*{password}" id="password" value=/>
+    <br/>
+    <label>
+        <input type="checkbox"
+               name="roleAdmin"
+               th:value="ROLE_ADMIN"
+               th:text="Admin">
+    </label>
+    <br/>
+    <label>
+        <input type="checkbox"
+               name="roleGuest"
+               th:value="ROLE_GUEST"
+               th:text="Guest">
+    </label>
     <br/>
     <input type="submit" value="Add"/>
 </form>

@@ -5,11 +5,15 @@
     <title>User</title>
 </head>
 <body>
-<p th:text="${user.getName()}">VALUE</p>
-<p th:text="${user.getId()}">VALUE</p>
-<p th:text="${user.getAge()}">VALUE</p>
-<p th:text="${user.getWork()}">VALUE</p>
-<p th:text="${user.isMarried()}">VALUE</p>
+<p th:text="ID +': '+${user.getId()}">VALUE</p>
+<p th:text="Username +': '+${user.getUsername()}">VALUE</p>
+<p th:text="Password +': '+${user.getPassword()}">VALUE</p>
+<p th:text="Roles +': '+${user.getAuthorities()}">VALUE</p>
+<p th:text="Name +': '+${user.getName()}">VALUE</p>
+<p th:text="Lastname +': '+${user.getLastname()}">VALUE</p>
+<p th:text="Age +': '+${user.getAge()}">VALUE</p>
+<p th:text="Work +': '+${user.getWork()}">VALUE</p>
+<p th:text="Married +': '+${user.isMarried()}">VALUE</p>
 <hr/>
 <a href="/users">To all users</a>
 </body>
