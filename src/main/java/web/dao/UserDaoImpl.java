@@ -9,7 +9,7 @@ import javax.transaction.Transactional;
 import java.util.List;
 
 @Repository
-public class UserDaoImpl implements UserDao  {
+public class UserDaoImpl implements UserDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -41,7 +41,7 @@ public class UserDaoImpl implements UserDao  {
     }
 
     @Override
-    public User getUserByUsername(String username){
+    public User getUserByUsername(String username) {
         return entityManager
                 .createQuery("select u from User u where u.username = :username", User.class)
                 .setParameter("username", username)

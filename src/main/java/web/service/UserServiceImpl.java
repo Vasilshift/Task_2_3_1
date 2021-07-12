@@ -27,13 +27,13 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         this.userDao = userDao;
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @Override
     public List<User> allUsers() {
         return userDao.allUsers();
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @Override
     public User get(int id) {
         return userDao.get(id);
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
             throw new UsernameNotFoundException("User not exists.");
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(),
-                user.getPassword(),mapRolesToAuthorities(user.getRoles()));
+                user.getPassword(), mapRolesToAuthorities(user.getRoles()));
     }
 
     private Set<? extends GrantedAuthority> mapRolesToAuthorities(Set<Role> roles) {

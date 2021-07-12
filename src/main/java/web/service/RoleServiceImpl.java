@@ -9,7 +9,7 @@ import web.model.Role;
 import java.util.List;
 
 @Service
-public class RoleServiceImpl implements RoleService{
+public class RoleServiceImpl implements RoleService {
 
     private final RoleDao roleDao;
 
@@ -24,13 +24,13 @@ public class RoleServiceImpl implements RoleService{
         return roleDao.getRoleByName(name);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @Override
     public Role getRoleById(int id) {
         return roleDao.getRoleById(id);
     }
 
-    @Transactional(readOnly=true)
+    @Transactional(readOnly = true)
     @Override
     public List<Role> allRoles() {
         return roleDao.allRoles();

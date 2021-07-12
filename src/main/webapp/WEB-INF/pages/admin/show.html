@@ -5,6 +5,10 @@
     <title>User</title>
 </head>
 <body>
+<form style="text-align: right" th:action="@{/logout}">
+    <button type="submit">Logout</button>
+</form>
+
 <p th:text="ID +': '+${user.getId()}">VALUE</p>
 <p th:text="Username +': '+${user.getUsername()}">VALUE</p>
 <p th:text="Password +': '+${user.getPassword()}">VALUE</p>

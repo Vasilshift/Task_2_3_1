@@ -2,45 +2,51 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>All users</title>
-  <style>table th, table td {padding: 5px;}</style>
+    <meta charset="UTF-8">
+    <title>All users</title>
+    <style>table th, table td {
+        padding: 5px;
+    }</style>
 </head>
 <body>
+<form style="text-align: right" th:action="@{/logout}">
+    <button type="submit">Logout</button>
+</form>
+
 <table>
-  <tr>
-    <th>ID</th>
-    <th>Name</th>
-    <th>Last name</th>
-    <th>Age</th>
-    <th>Work</th>
-    <th>Married</th>
-    <th>Username</th>
-    <th>Password</th>
-    <th>Roles</th>
-    <th>Actions</th>
-  </tr>
-  <th:block th:each="user : ${userList}">
     <tr>
-      <td>
-        <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a>
-      </td>
-      <td th:text="${user.getName()}">Name</td>
-      <td th:text="${user.getLastname()}">LastName</td>
-      <td th:text="${user.getAge()}">Age</td>
-      <td th:text="${user.getWork()}">Work</td>
-      <td th:text="${user.isMarried()}">Married?</td>
-      <td th:text="${user.getUsername()}">Username</td>
-      <td th:text="${user.getPassword()}">Password</td>
-      <td th:text="${user.getAuthorities()}">Roles</td>
-      <td>
-        <a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Update</a>
-        <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
-          <input type = "submit" value="Delete"/>
-        </form>
-      </td>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Last name</th>
+        <th>Age</th>
+        <th>Work</th>
+        <th>Married</th>
+        <th>Username</th>
+        <th>Password</th>
+        <th>Roles</th>
+        <th>Actions</th>
     </tr>
-  </th:block>
+    <th:block th:each="user : ${userList}">
+        <tr>
+            <td>
+                <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a>
+            </td>
+            <td th:text="${user.getName()}">Name</td>
+            <td th:text="${user.getLastname()}">LastName</td>
+            <td th:text="${user.getAge()}">Age</td>
+            <td th:text="${user.getWork()}">Work</td>
+            <td th:text="${user.isMarried()}">Married?</td>
+            <td th:text="${user.getUsername()}">Username</td>
+            <td th:text="${user.getPassword()}">Password</td>
+            <td th:text="${user.getAuthorities()}">Roles</td>
+            <td>
+                <a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Update</a>
+                <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
+                    <input type="submit" value="Delete"/>
+                </form>
+            </td>
+        </tr>
+    </th:block>
 </table>
 <br/>
 <hr/>

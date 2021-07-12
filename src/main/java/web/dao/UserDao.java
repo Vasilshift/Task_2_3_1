@@ -5,7 +5,7 @@ import web.model.User;
 import java.util.List;
 
 
-public interface UserDao  {
+public interface UserDao {
 
     List<User> allUsers();
 

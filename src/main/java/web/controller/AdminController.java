@@ -47,15 +47,15 @@ public class AdminController {
     @PostMapping("/users")
     public String add(@ModelAttribute("user") User user,
                       @RequestParam(required = false) String roleAdmin,
-                      @RequestParam(required = false) String roleGuest) {
+                      @RequestParam(required = false) String roleUser) {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getDefaultRole());
 
-        if (roleAdmin != null  && roleGuest.equals("ROLE_GUEST")){
+        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
             roles.add(roleService.getRoleByName("ROLE_ADMIN"));
         }
-        if (roleGuest != null && roleGuest.equals("ROLE_GUEST")) {
-            roles.add(roleService.getRoleByName("ROLE_GUEST"));
+        if (roleUser != null && roleUser.equals("ROLE_USER")) {
+            roles.add(roleService.getRoleByName("ROLE_USER"));
         }
         user.setRoles(roles);
         userService.add(user);
@@ -67,12 +67,12 @@ public class AdminController {
         User user = userService.get(id);
         Set<Role> roles = user.getRoles();
 
-        for (Role role: roles) {
+        for (Role role : roles) {
             if (role.equals(roleService.getRoleByName("ROLE_ADMIN"))) {
                 model.addAttribute("roleAdmin", true);
             }
-            if (role.equals(roleService.getRoleByName("ROLE_GUEST"))) {
-                model.addAttribute("roleGuest", true);
+            if (role.equals(roleService.getRoleByName("ROLE_USER"))) {
+                model.addAttribute("roleUser", true);
             }
         }
         model.addAttribute("user", userService.get(id));
@@ -82,15 +82,15 @@ public class AdminController {
     @PatchMapping("/users/{id}")
     public String update(@ModelAttribute("user") User user,
                          @RequestParam(required = false) String roleAdmin,
-                         @RequestParam(required = false) String roleGuest) {
+                         @RequestParam(required = false) String roleUser) {
         Set<Role> roles = new HashSet<>();
         roles.add(roleService.getDefaultRole());
 
-        if (roleAdmin != null && roleAdmin .equals("ROLE_ADMIN")) {
+        if (roleAdmin != null && roleAdmin.equals("ROLE_ADMIN")) {
             roles.add(roleService.getRoleByName("ROLE_ADMIN"));
         }
-        if (roleGuest != null && roleGuest.equals("ROLE_GUEST")) {
-            roles.add(roleService.getRoleByName("ROLE_GUEST"));
+        if (roleUser != null && roleUser.equals("ROLE_USER")) {
+            roles.add(roleService.getRoleByName("ROLE_USER"));
         }
         user.setRoles(roles);
         userService.update(user);

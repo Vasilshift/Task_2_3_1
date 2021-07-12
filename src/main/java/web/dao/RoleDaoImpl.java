@@ -8,7 +8,7 @@ import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
-public class RoleDaoImpl implements RoleDao{
+public class RoleDaoImpl implements RoleDao {
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -23,7 +23,7 @@ public class RoleDaoImpl implements RoleDao{
 
     @Override
     public Role getRoleById(int id) {
-        return entityManager.find(Role.class,id);
+        return entityManager.find(Role.class, id);
     }
 
     @Override
@@ -33,6 +33,6 @@ public class RoleDaoImpl implements RoleDao{
 
     @Override
     public Role getDefaultRole() {
-        return getRoleByName("ROLE_USER");
+        return getRoleByName("ROLE_GUEST");
     }
 }

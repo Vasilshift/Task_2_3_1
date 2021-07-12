@@ -46,7 +46,7 @@ public class User implements UserDetails {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
 
-    public User(String name, String lastname, int age, String work, boolean isMarried,Set<Role> roles) {
+    public User(String name, String lastname, int age, String work, boolean isMarried, Set<Role> roles) {
         this.name = name;
         this.lastname = lastname;
         this.work = work;

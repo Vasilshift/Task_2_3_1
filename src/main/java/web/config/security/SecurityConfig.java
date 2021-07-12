@@ -17,53 +17,43 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
-    @Autowired
-    @Qualifier("userServiceImpl")
-    private UserDetailsService userDetailsService;
+    private final UserDetailsService userDetailsService;
+
+    private final SuccessUserHandler successUserHandler;
+
+
+    public SecurityConfig(@Qualifier("userServiceImpl") UserDetailsService userDetailsService, SuccessUserHandler successUserHandler) {
+        this.userDetailsService = userDetailsService;
+        this.successUserHandler = successUserHandler;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
+
+        http.formLogin().successHandler(successUserHandler)
+                .and()
                 .csrf().disable()
                 .authorizeRequests()
-                //      .antMatchers("/").permitAll()
-                //      .antMatchers("/login").anonymous()
+                .antMatchers("/").permitAll()
+                .antMatchers("/login").anonymous()
                 .antMatchers("/user").hasAnyRole("USER,ADMIN")
                 .antMatchers("/admin/**").hasRole("ADMIN")
+                .antMatchers("/guest").permitAll()
                 .anyRequest().authenticated()
-                .and().formLogin()
-                .and().logout().logoutSuccessUrl("/")
-        ;
+                .and().
+                logout().logoutSuccessUrl("/login").permitAll();
     }
 
 
-//    @Bean
-//    public JdbcUserDetailsManager users (DataSource dataSource){
-//        dataSource = hibernateConfig.dataSource();
-//        UserDetails user = User.builder()
-//                .username("bbb")
-//                .password("bbb")
-//                .roles("ADMIN","USER")
-//                .build();
-//        JdbcUserDetailsManager jdbcUserDetailsManager = new JdbcUserDetailsManager(dataSource);
-//        jdbcUserDetailsManager.createUser(user);
-//        return jdbcUserDetailsManager;
-////    }
-//    @Override
-//    public void configure(AuthenticationManagerBuilder auth) throws Exception {
-//        auth.inMemoryAuthentication().withUser("ADMIN").password("1").roles("ADMIN");
-//        auth.inMemoryAuthentication().withUser("USER").password("1").roles("USER");
-//        auth.inMemoryAuthentication().withUser("VIP").password("1").roles("VIP");
-//    }
-
     @Bean
-    protected DaoAuthenticationProvider daoAuthenticationProvider(){
+    protected DaoAuthenticationProvider daoAuthenticationProvider() {
         DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider();
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         daoAuthenticationProvider.setUserDetailsService(userDetailsService);
         return daoAuthenticationProvider;
     }
 
+    @Autowired
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.authenticationProvider(daoAuthenticationProvider());
