@@ -3,24 +3,103 @@ package web.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
+import web.model.Role;
 import web.model.User;
+import web.service.RoleService;
 import web.service.UserService;
 
-import java.security.Principal;
+import java.util.HashSet;
+import java.util.Set;
 
 @Controller
-@RequestMapping("/user")
+@RequestMapping("/admin")
 public class AdminController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
-    @GetMapping()
-    public String showUser(Principal principal, Model model) {
-        User user = userService.getUserByUsername(principal.getName());
-        model.addAttribute(user);
-        return "users/show";
+    private final RoleService roleService;
+
+    @Autowired
+    public AdminController(UserService userService, RoleService roleService) {
+        this.userService = userService;
+        this.roleService = roleService;
+    }
+
+    @GetMapping("/users")
+
+    public String allUsers(Model model) {
+        model.addAttribute("userList", userService.allUsers());
+        return "admin/allUsers";
+    }
+
+    @GetMapping("/users/{id}")
+    public String showUser(@PathVariable("id") int id, Model model) {
+        model.addAttribute(userService.get(id));
+        return "admin/show";
+    }
+
+    @GetMapping("/users/new_user")
+    public String newUser(@ModelAttribute("user") User user) {
+        return "admin/new_user";
+    }
+
+    @PostMapping("/users")
+    public String add(@ModelAttribute("user") User user,
+                      @RequestParam(required = false) String roleAdmin,
+                      @RequestParam(required = false) String roleGuest) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getDefaultRole());
+
+        if (roleAdmin != null  && roleGuest.equals("ROLE_GUEST")){
+            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
+        }
+        if (roleGuest != null && roleGuest.equals("ROLE_GUEST")) {
+            roles.add(roleService.getRoleByName("ROLE_GUEST"));
+        }
+        user.setRoles(roles);
+        userService.add(user);
+        return "redirect:/admin/users";
+    }
+
+    @GetMapping("/users/{id}/edit")
+    public String edit(@PathVariable("id") int id, Model model) {
+        User user = userService.get(id);
+        Set<Role> roles = user.getRoles();
+
+        for (Role role: roles) {
+            if (role.equals(roleService.getRoleByName("ROLE_ADMIN"))) {
+                model.addAttribute("roleAdmin", true);
+            }
+            if (role.equals(roleService.getRoleByName("ROLE_GUEST"))) {
+                model.addAttribute("roleGuest", true);
+            }
+        }
+        model.addAttribute("user", userService.get(id));
+        return "admin/edit";
+    }
+
+    @PatchMapping("/users/{id}")
+    public String update(@ModelAttribute("user") User user,
+                         @RequestParam(required = false) String roleAdmin,
+                         @RequestParam(required = false) String roleGuest) {
+        Set<Role> roles = new HashSet<>();
+        roles.add(roleService.getDefaultRole());
+
+        if (roleAdmin != null && roleAdmin .equals("ROLE_ADMIN")) {
+            roles.add(roleService.getRoleByName("ROLE_ADMIN"));
+        }
+        if (roleGuest != null && roleGuest.equals("ROLE_GUEST")) {
+            roles.add(roleService.getRoleByName("ROLE_GUEST"));
+        }
+        user.setRoles(roles);
+        userService.update(user);
+        return "redirect:/admin/users";
+    }
+
+    @DeleteMapping("/users/{id}")
+    public String delete(@PathVariable("id") int id) {
+        userService.delete(id);
+        return "redirect:/admin/users";
     }
 }

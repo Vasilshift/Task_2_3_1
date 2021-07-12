@@ -23,7 +23,7 @@
   <th:block th:each="user : ${userList}">
     <tr>
       <td>
-        <a th:href="@{/users/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a>
+        <a th:href="@{/admin/users/{id}(id=${user.getId()})}" th:text="${user.getId()}"></a>
       </td>
       <td th:text="${user.getName()}">Name</td>
       <td th:text="${user.getLastname()}">LastName</td>
@@ -34,8 +34,8 @@
       <td th:text="${user.getPassword()}">Password</td>
       <td th:text="${user.getAuthorities()}">Roles</td>
       <td>
-        <a th:href="@{/users/{id}/edit(id=${user.getId()})}">Update</a>
-        <form th:method="DELETE" th:action="@{/users/{id}(id=${user.getId()})}">
+        <a th:href="@{/admin/users/{id}/edit(id=${user.getId()})}">Update</a>
+        <form th:method="DELETE" th:action="@{/admin/users/{id}(id=${user.getId()})}">
           <input type = "submit" value="Delete"/>
         </form>
       </td>
@@ -44,7 +44,7 @@
 </table>
 <br/>
 <hr/>
-<a href="/users/new">Add new user</a>
+<a href="/admin/users/new_user">Add new user</a>
 
 </body>
 </html>
